@@ -2,16 +2,29 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import ApiError from './utils/ApiError.js';
 import ApiResponse from './utils/ApiResponse.js';
+
+// Validate required environment variables
+const requiredEnvVars = [
+  'MONGO_URI',
+  'JWT_SECRET',
+  'JWT_REFRESH_SECRET',
+  'CLOUDINARY_CLOUD_NAME',
+  'CLOUDINARY_API_KEY',
+  'CLOUDINARY_API_SECRET'
+];
+
+for (const envVar of requiredEnvVars) {
+  if (!process.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
+}
+
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import courseRoutes from './routes/course.routes.js';
 import purchaseRoutes from './routes/purchase.routes.js';
-
-// load environment variables early
-dotenv.config();
 
 const app = express();
 
