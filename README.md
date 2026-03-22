@@ -56,6 +56,6 @@ See source code for request/response formats.
 ```
 
 post-man paths
+(all paths tested)
 
-
-![alt text](image.png)
+![alt text](image-1.png)
