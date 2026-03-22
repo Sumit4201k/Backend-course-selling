@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
+import { promises as fsPromises } from 'fs';
 
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 
@@ -33,9 +34,11 @@ export const uploadLocalFile = async (filePath, folder, resourceType = 'image') 
     return result;
   } finally {
     // ensure local copy is removed regardless of success or failure
-    fs.unlink(filePath, err => {
-      if (err) console.error('Error deleting temp file', filePath, err);
-    });
+    try {
+      await fsPromises.unlink(filePath);
+    } catch (err) {
+      console.error('Error deleting temp file', filePath, err);
+    }
   }
 };
 
